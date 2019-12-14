@@ -1,0 +1,120 @@
+body{
+    background-color: #ddd;
+}
+
+.home h1 {
+    padding: 10px;
+    text-align: center;
+    background-color: black;
+    color: #fff;
+}
+
+.home .menu-bar {
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+    background-color: black;
+    color: #fff;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-gap: 30px;
+}
+
+.home .menu-bar input {
+    margin: 0 auto;
+    width: 80%;
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #fff;
+    font-size: 16px;
+}
+
+.home-container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 0 ;
+    text-align: center;
+}
+
+.home-container ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 30px;
+    margin-top: 20px;
+}
+
+.home-container ul li {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 8px;;
+    padding: 8px;
+    -webkit-box-shadow: 2px 2px 5px #bbb;
+    -moz-box-shadow:    2px 2px 5px #bbb;
+    box-shadow:         2px 2px 5px #bbb;
+}
+
+.home-container ul li:hover {
+    -webkit-box-shadow: 9px 7px 5px #bbb;
+    -moz-box-shadow:    9px 7px 5px #bbb;
+    box-shadow:         9px 7px 5px #bbb;
+}
+
+.home-container ul li footer {
+    flex: 1;
+    padding: 15px 0;
+    text-align: left;
+    border-radius: 0 0 10px 10px;
+}
+
+.home-container .home-container ul li footer strong {
+    font-size: 16px;
+    color: #333;
+}
+
+.home-container ul li footer p {
+    font-size: 14px;
+    line-height: 20px;
+    color: #999;
+    margin-top: 5px;
+}
+
+.home-container ul li .buttons {
+    margin-top: 5px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 50px;
+}
+
+button {
+    width: 120px;
+    height: 24px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#describe{
+    background-color: blue;
+    color: #fff;
+}
+
+#delete{
+    background-color: red;
+    color: #fff;
+}
+
+button:hover {
+    transform: translateY(-5px);
+    transition: all 0.2s;
+}
+
+#insert {
+    width: 150px;
+    font-size: 16px;
+    background-color: blue;
+    color: #fff;
+}

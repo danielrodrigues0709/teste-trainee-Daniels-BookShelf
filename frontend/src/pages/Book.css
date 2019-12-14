@@ -1,0 +1,73 @@
+body{
+    background-color: #ddd;
+}
+
+.container {
+    background: #fff;
+    border-radius: 8px;
+    -webkit-box-shadow: 2px 2px 5px #bbb;
+    -moz-box-shadow:    2px 2px 5px #bbb;
+    box-shadow:         2px 2px 5px #bbb;
+    list-style: none;
+    display: grid;
+    grid-gap: 30px;
+    margin-top: 50px;
+    max-width: 880px;
+    margin: 20px auto;
+    padding: 20px ;
+    text-align: center;
+    columns: 2;
+}
+
+.book-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-container strong {
+    font-size: 30px;
+    color: #333;
+}
+
+.book-container p {
+    text-align: left;
+    font-size: 18px;
+    line-height: 30px;
+    color: #999;
+    margin-top: 5px; 
+    flex: 1;
+}
+
+#description {
+    line-height: 20px;
+}
+
+.buttons-container {
+    margin: 0 auto;
+    width: 40%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 30px;
+}
+
+.buttons-container button {
+    height: 24px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#back{
+    background-color: blue;
+    color: #fff;
+}
+
+#patch{
+    background-color: red;
+    color: #fff;
+}
+
+.book-container div .buttons button:hover {
+    transform: translateY(-5px);
+    transition: all 0.2s;
+}
