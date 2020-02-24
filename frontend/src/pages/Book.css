@@ -58,12 +58,12 @@ body{
 }
 
 #back{
-    background-color: blue;
+    background-color: red;
     color: #fff;
 }
 
 #patch{
-    background-color: red;
+    background-color: blue;
     color: #fff;
 }
 

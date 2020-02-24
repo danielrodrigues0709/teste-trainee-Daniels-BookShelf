@@ -3,10 +3,9 @@ const mysql = require('mysql');
 
 const router = require('./routes')
 const tableBooks = require('./models/BooksDataBase');
-//const tableAuthors = require('./models/AuthorsDataBase');
 const tablePublishers = require('./models/PublishersDataBase');
+const tableAuthors = require('./models/AuthorsDataBase');
 //const tableWrite = require('./models/write');
-// const addBooks = require('./models/AddBooks');
 
 const server = express();
 
@@ -27,8 +26,7 @@ connection.connect((err) => {
     if (err) return console.log(err);
     console.log('BD conectado');
     tableBooks(connection);
-    //tableAuthors(connection);
     tablePublishers(connection);
+    tableAuthors(connection);
     //tableWrite(connection);
-    //addBooks(connection);
 });

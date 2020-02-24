@@ -1,93 +1,69 @@
 import React, { useEffect, useState } from 'react';
-import './Home.css';
-
+import './Book.css';
 import api from '../services/api';
 
-export default function Home({ match, history }) {
-  const [books, setBooks] = useState([]);
-  const [bookTitle, setBookTitle] = useState('')
+export default function Search({ history, match }) {
 
+  //Inicia estados
+  const [book, setBook] = useState([]);
+
+  //Seleciona o livro no BD pelo Título
   useEffect(() => {
-    async function loadBooks( match) {
-      setBookTitle(bookTitle.filter(book => book.Title === match.params.Title));
-    }
-    loadBooks();
-  }, []);
-
-  async function handleSearch(e) {
-    e.preventDefaul()
-
-    const response = await api.post('/search', {
-      Title: bookTitle,
+    async function loadBook(Title) {
+      const response = await api.get(`/search/${Title}`, {
+        Title: match.params.title, //Recebe o parâmetro da URL
       });
 
-    history.push(`/search/${bookTitle}`) 
-    console.log("Recarregou página");
+      //Atualiza estado
+      setBook(response.data[0]);
+      console.log(response.data[0]);
+      console.log("Passou parametro");
+    }
+    loadBook(`${match.params.title}`);
+  }, [match.params.title]);
+
+  //Volta à página inicial
+  async function handleBack() {
+    history.push('/');
   }
 
-  async function handleOpen(e) {
+  //Direciona para a página de atualização dos dados
+  async function handlePatch(e) {
     const response = await api.get('/books');
 
-    history.push(`/books/${e}`)
+    history.push(`/atualiza/${e}`)
     console.log(response.data, e)
-    console.log("Abre detalhes de ", e)
+    console.log("Abre tela para arteração de ", e)
   }
 
-  async function handleDelete(ID) {
-    const response = await api.delete(`/books/${ID}`, {
-      headers: {
-        ID: match.params.id
-      }
-    })
-
-    setBooks(books.filter(book => book.ID !== ID));
-    console.log(response.data);
-    console.log("Deleta", ID)
-  }
-
-  function handleInsert() {
-    history.push('/cadastro');
-  }
-
+  //Renderiza a página
   return (
     <div className="home">
       <h1>Daniel's BookShelf</h1>
-      <div className="menu-bar">
-        <form onSubmit={handleSearch}>
-          <input 
-            value={bookTitle}
-            onChange={e => setBookTitle(e.target.value)}
-            placeholder="Digite aqui o nome do livro ou autor"
-          />
-        </form>
-        <button type="button" id="insert" onClick={handleInsert}>Cadastrar Livro</button>
-      </div>
+      
+      <ul className="container">
+        <li className="book-container">
+          <strong>{book.Title}</strong>
+          <p id="description">{book.Description}</p>
+          <p>ISBN: {book.ISBN}</p>
 
-      <div className="home-container">
-        <ul>
 
-          {books.map(book => (
-            <li key={book.ID}>
-              <img>{book.Thumbnail.data}</img>
-              <footer>
-                <strong>{book.Title}</strong>
-                <p>{book.Description}</p>
-                <p>ISBN: {book.ISBN}</p>
-                <p>Editora: {book.Publisher}</p>
-                <p>Valor: R$ {book.Amount}</p>
-              </footer>
-              <div className="buttons">
-                <button type="button" id="describe" onClick={(e) => handleOpen(book.ID, e)}>Detalhes</button>
-                <button type="button" id="delete" onClick={(e) => handleDelete(book.ID, e)}>Excluir</button>
-              </div>
-            </li>
-          ))}
+          <datalist id="aut">
+            <option value="Autor 1"></option>
+            <option value="Autor 1"></option>
+          </datalist>
 
-        </ul>
 
-      </div>
+          <p>Editora: {book.Publisher}</p>
+          <p>Valor: R$ {book.Amount}</p>
+          <p>Número de páginas: {book.PageCount}</p>
+          <p>Data de publicação: {book.PublishedDate}</p>
+        </li>
+        <li className="buttons-container">
+          <button type="button" id="patch" onClick={(e) => handlePatch(book.ID, e)}>Alterar</button>
+          <button type="button" id="back" onClick={handleBack}>Voltar</button>
+        </li>
+      </ul>
     </div>
-
-
-  );
+  )
 }

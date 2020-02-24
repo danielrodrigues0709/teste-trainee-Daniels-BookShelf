@@ -1,3 +1,60 @@
 body{
     background-color: #ddd;
 }
+
+.home .form-container {
+    background: #fff;
+    border-radius: 8px;
+    -webkit-box-shadow: 2px 2px 5px #bbb;
+    -moz-box-shadow:    2px 2px 5px #bbb;
+    box-shadow:         2px 2px 5px #bbb;
+    list-style: none;
+    margin-top: 50px;
+    max-width: 880px;
+    margin: 20px auto;
+    padding: 20px ;
+    text-align: center;
+}
+
+.home .form-container form{
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.home .form-container form input{
+    margin: 0 auto;
+    width: 80%;
+    padding: 5px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #fff;
+    font-size: 16px;
+}
+
+.smallInputs {
+    max-width: 170px;
+}
+
+.label {
+    padding-left: 10px;
+}
+
+.buttons-container {    
+    margin: 0 auto;
+    padding-top: 20px;
+    width: 40%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 30px;
+}
+
+#submit{
+    background-color: blue;
+    color: #fff;
+}
+
+#cancel{
+    background-color: red;
+    color: #fff;
+}

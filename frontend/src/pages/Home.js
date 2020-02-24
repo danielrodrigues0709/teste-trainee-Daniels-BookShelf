@@ -4,30 +4,36 @@ import './Home.css';
 import api from '../services/api';
 
 export default function Home({ match, history }) {
+
+  //Inicia os estados
   const [books, setBooks] = useState([]);
   const [bookTitle, setBookTitle] = useState('')
 
+  //Carrega os livros cadastrados no BD
   useEffect(() => {
     async function loadBooks() {
       const response = await api.get('/books');
 
+      //Atualiza estado
       setBooks(response.data);
       console.log(response.data)
     }
     loadBooks();
   }, []);
 
-  // async function handleSearch(e) {
-  //   e.preventDefaul()
+  //Filtra livro pelo título digitado pelo usuário
+  async function handleSearch(e) {
+    e.preventDefault()
+    console.log(e.target.value)
+    await api.get(`/search/${bookTitle}`, {
+      title: bookTitle,
+      });
 
-  //   const response = await api.post('/search', {
-  //     Title: bookTitle,
-  //     });
+    history.push(`/search/${bookTitle}`)
+    console.log("Recarregou página");
+  }
 
-  //   history.push(`/search/${bookTitle}`) 
-  //   console.log("Recarregou página");
-  // }
-
+  //Abre detalhes do livro
   async function handleOpen(e) {
     const response = await api.get('/books');
 
@@ -36,6 +42,7 @@ export default function Home({ match, history }) {
     console.log("Abre detalhes de ", e)
   }
 
+  //Exclui um registro de um livro
   async function handleDelete(ID) {
     const response = await api.delete(`/books/${ID}`, {
       headers: {
@@ -43,24 +50,27 @@ export default function Home({ match, history }) {
       }
     })
 
+    //Atualiza estado
     setBooks(books.filter(book => book.ID !== ID));
     console.log(response.data);
     console.log("Deleta", ID)
   }
 
+  //Abre tela de cadastro de livro
   function handleInsert() {
     history.push('/cadastro');
   }
 
+  //Renderiza a página
   return (
     <div className="home">
-      <h1>Daniel's BookShelf</h1>
+      <h1>Daniel's BookStore</h1>
       <div className="menu-bar">
-        <form >
+        <form onSubmit={handleSearch}>
           <input 
             value={bookTitle}
             onChange={e => setBookTitle(e.target.value)}
-            placeholder="Digite aqui o nome do livro ou autor"
+            placeholder="Digite aqui o nome do livro"
           />
         </form>
         <button type="button" id="insert" onClick={handleInsert}>Cadastrar Livro</button>

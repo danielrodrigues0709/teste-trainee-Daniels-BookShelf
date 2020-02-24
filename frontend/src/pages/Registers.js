@@ -1,137 +1,212 @@
-import React, { useEffect, Component} from 'react';
+import React, { Component } from 'react';
 import './Registers.css';
-import axios from 'axios'
 
 import api from '../services/api';
 
 class Register extends Component {
+
+    // Inicia o construtor
     constructor(props) {
         super(props)
 
         this.state = {
             title: '',
-            description: '',            
-            isbn: '',            
-            publisher: '',            
-            publishedDate: '',            
-            pageCount: '',            
+            description: '',
+            isbn: '',
+            publisher: '',
+            authors: '',
+            publishedDate: '',
+            pageCount: '',
             amount: ''
         }
     }
 
-    registerBook = e => {
-        this.setState({[e.target.name]: e.target.value})
+    // Insere as editoras no dropdown
+    async loadPublishers() {
+        const publishers = await api.get('/publishers');
+        let publishersList = [];
+
+        for (let i = 0, max = publishers.data.length; i < max; i += 1) {
+            publishersList.push(publishers.data[i].Publisher)
+
+
+            let list = document.getElementById('pdList');
+            let option = document.createElement('option');
+            let textnode = document.createTextNode(publishers.data[i].Publisher)
+            option.appendChild(textnode);
+            list.appendChild(option);
+        }
+
+        console.log(publishersList)
     }
 
+    //Insere os autores no dropdown
+    async loadAuthors() {
+        const authors = await api.get('/authors');
+        let authorsList = [];
+
+        for (let i = 0, max = authors.data.length; i < max; i += 1) {
+            authorsList.push(authors.data[i].Name)
+
+            let list = document.getElementById('adList');
+            let option = document.createElement('option');
+            let textnode2 = document.createTextNode(authors.data[i].Name)
+            option.appendChild(textnode2);
+            list.appendChild(option);
+        }
+        console.log(authorsList)
+    }
+
+    //Limpa o input para que possa ser escolhido outro
+    clearState = e => {
+        e.target.value = ''
+    }
+
+    //Inicia as funções quando a página é carregada
+    componentDidMount() {
+        this.loadPublishers();
+        this.loadAuthors();
+    }
+
+    //Recebe os valores digitados nos campos
+    registerBook = e => {
+        this.setState({ [e.target.name]: e.target.value })
+    }
+
+    //Envia os dados para o BD
     sendData = e => {
         e.preventDefault();
 
         api.post('/books', this.state)
-        .then(respose => {
-            console.log("Livro cadastrado")
-            window.location.href='/'
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            .then(response => {
+                console.log("Livro cadastrado")
+                window.location.href = '/'
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
+    //Volta à página inicial
     cancel() {
-        window.location.href='/'
+        window.location.href = '/'
     }
 
+    //Renderiza a página
     render() {
         const {
             title,
-        description,        
-        isbn,        
-        publisher,        
-        publishedDate,        
-        pageCount,        
-        amount
-    } = this.state
+            description,
+            isbn,
+            publisher,
+            authors,
+            publishedDate,
+            pageCount,
+            amount
+        } = this.state
 
         return (
-            <div className="home">
-                <h1>Daniel's BookShelf</h1>
-                <form id="form" onSubmit={this.sendData}>
-                    <label>Título do livro: </label>
-                    <input
-                        type="text"
-                        name="title"
-                        value ={title}
-                        onChange={this.registerBook}
-                        placeholder="Título do livro"
-                    />
-                    <br></br>
-                    <br></br>
-                    <label>Descrição: </label>
-                    <input
-                        type="text"
-                        name="description"
-                        value ={description}
-                        onChange={this.registerBook}
-                        placeholder="Descrição"
-                    />
-                    <br></br>
-                    <br></br>
-                    <label>ISBN: </label>
-                    <input
-                        type="number"
-                        name="isbn"
-                        value ={isbn}
-                        onChange={this.registerBook}
-                        placeholder="ISBN"
-                    />
-                    <br></br>
-                    <br></br>
-                    <label>Editora: </label>
-                    <input
-                        type="text"
-                        name="publisher"
-                        value ={publisher}
-                        onChange={this.registerBook}
-                        placeholder="Editora"
-                    />
-                    <br></br>
-                    <br></br>
-                    <label>Data de publicação: </label>
-                    <input
-                        type="text"
-                        name="publishedDate"
-                        value ={publishedDate}
-                        onChange={this.registerBook}
-                        placeholder="Data de publicação"
-                    />
-                    <br></br>
-                    <br></br>
-                    <label>Nº de páginas: </label>
-                    <input
-                        type="number"
-                        name="pageCount"
-                        value ={pageCount}
-                        onChange={this.registerBook}
-                        placeholder="Nº de páginas"
-                    />
-                    <br></br>
-                    <br></br>
-                    <label>Valor: </label>
-                    <input
-                        type="float"
-                        name="amount"
-                        value ={amount}
-                        onChange={this.registerBook}
-                        placeholder="Valor"
-                    />
-                </form>
-                <br></br>
-                <br></br>                
-                <button type="submit" id="submit" form="form">Cadastrar</button>
-                <button type="button" id="back" onClick={this.cancel}>Cancelar</button>
+            <div className="home" >
+                <h1>Daniel's BookStore</h1>
+                <div className="form-container">
+                    <form id="form" onSubmit={this.sendData}>
+                        <label>Título do livro: </label>
+                        <input
+                            type="text"
+                            name="title"
+                            value={title}
+                            onChange={this.registerBook}
+                            placeholder="Título do livro"
+                        />
+                        <br></br>
+                        <br></br>
+                        <label>Descrição: </label>
+                        <input
+                            type="text"
+                            name="description"
+                            value={description}
+                            onChange={this.registerBook}
+                            placeholder="Descrição"
+                        />
+                        <br></br>
+                        <br></br>
+                        <label>Editora: </label>
+                        <input
+                            className="smallInputs"
+                            list="pdList"
+                            name="publisher"
+                            value={publisher}
+                            onChange={this.registerBook}
+                            onClick={this.clearState}
+                            placeholder="Clique para selecionar a editora"
+                            formMethod="get"
+                        />
+                        <datalist id="pdList"></datalist>
+                        
+                        <label className="label">Autores: </label>
+                        <input
+                            className="smallInputs"
+                            list="adList"
+                            name="authors"
+                            value={authors}
+                            onChange={this.registerBook}
+                            onClick={this.clearState}
+                            placeholder="Clique para selecionar o autor"
+                            formMethod="get"
+                        />
+                        <datalist id="adList"></datalist>
+
+                        <br></br>
+                        <br></br>
+                        <label>ISBN: </label>
+                        <input
+                            className="smallInputs"
+                            type="number"
+                            name="isbn"
+                            value={isbn}
+                            onChange={this.registerBook}
+                            placeholder="ISBN"
+                        />
+                        <label className="label">Data de publicação: </label>
+                        <input
+                            className="smallInputs"
+                            type="text"
+                            name="publishedDate"
+                            value={publishedDate}
+                            onChange={this.registerBook}
+                            placeholder="Data de publicação"
+                        />
+                        <br></br>
+                        <br></br>
+                        <label>Nº de páginas: </label>
+                        <input
+                            className="smallInputs"
+                            type="number"
+                            name="pageCount"
+                            value={pageCount}
+                            onChange={this.registerBook}
+                            placeholder="Nº de páginas"
+                        />
+                        <label className="label">Valor: </label>
+                        <input
+                            className="smallInputs"
+                            type="float"
+                            name="amount"
+                            value={amount}
+                            onChange={this.registerBook}
+                            placeholder="Valor"
+                        />
+                    </form>
+                    <div className="buttons-container">
+                        <button type="submit" id="submit" form="form">Cadastrar</button>
+                        <button type="button" id="cancel" onClick={this.cancel}>Cancelar</button>
+
+                    </div>
+                </div>
             </div>
         )
     }
-    
+
 }
 
 export default Register;
